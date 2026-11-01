@@ -11,7 +11,7 @@ Reads what a photo says about itself, without decoding the picture: when it was 
 
 The photo pages stay in the app.
 
-How to use it is in **Help** inside WittyMediaServer: see the photos guide.
+How to use it is in **Help** inside WittyMediaServer: see Photos.
 
 ## How to get it
 
