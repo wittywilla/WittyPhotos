@@ -1,25 +1,68 @@
 # WittyPhotos
 
-What a photo says about itself, read without decoding it: EXIF (when, with what camera, where),
-the picture's dimensions, and the JPEG preview inside a camera RAW file. Pure Go, and the library
-itself has no dependencies. Used by the WittyPhotos library in
-[WittyMediaServer](https://github.com/wittywilla/WittyMediaServer).
+Reads what a photo says about itself, without decoding the picture: when it was taken, with what camera, where, and how big it is. WittyMediaServer's photo libraries use it, and you need it if you have one.
 
-`cmd/wittyphotos-module` is the same code as a helper process, so a new version can reach a server
-without a new server. Its `module.json` says which servers it works with, and a `v*` tag publishes a
-signed release of it. See WittyMediaServer's `docs/MODULES.md`.
+## What it does
 
-```go
-info, err := wittyphotos.ReadFile("IMG_0001.heic")   // JPEG, TIFF, RAW, HEIC, AVIF, PNG, WebP
-w, h := wittyphotos.Dimensions("IMG_0002.png")       // JPEG, PNG, GIF, WebP, BMP
-jpeg, err := wittyphotos.RawPreview("DSC_0003.nef")  // the largest embedded JPEG
+- **Reads EXIF** from JPEG, TIFF, camera RAW, HEIC, AVIF, PNG and WebP files.
+- **Reads picture sizes** from JPEG, PNG, GIF, WebP and BMP.
+- **Pulls the largest JPEG preview out of a camera RAW file.** `module.json` lists the RAW extensions it takes.
+- **Treats every file as untrusted.** Only a bounded part of each file is read, every offset is checked, and a malformed file gives an error or empty fields.
+
+The photo pages stay in the app.
+
+How to use it is in **Help** inside WittyMediaServer: see the photos guide.
+
+## How to get it
+
+An admin adds it from the module store inside WittyMediaServer: **Settings → Modules**, then **Browse the store**, then **Add** beside WittyPhotos. That needs WittyMediaServer 0.6.0-alpha or later, and it works with nothing older. The range this version fits is in `module.json`: 0.6.0-alpha through 0.6.x.
+
+## What it needs
+
+[WittyModule](https://github.com/wittywilla/WittyModule), which is how a server talks to it, built in. Nothing else. It's written in Go with no cgo.
+
+## Platforms
+
+A program is built for each system below, and the server uses the right one.
+
+| System | Where it stands |
+|---|---|
+| Linux (x64, arm64, 32-bit ARM, x86) | Its tests pass on x64. The other CPUs are only built |
+| Windows (x64, arm64) | Built. This version hasn't been run on Windows since it became its own program |
+| macOS (Intel, Apple silicon) | Built by the release tool. It has not been run on a real Mac |
+| FreeBSD (amd64, arm64) | Cross-compiled only. It has not been run |
+
+On macOS and FreeBSD the server has no sandbox for a module's helper: it gets a small environment and a soft memory limit, and nothing more.
+
+## Building and testing
+
+You need Go 1.26 or newer. In a worktree, first run the copy of `dev-modules.mjs` kept above the repositories (`node D:/projects/dev-modules.mjs` on the development machine). It writes a `go.work` that git ignores, so the checkout builds against the repositories beside it. Never run `go work use`.
+
+```bash
+go vet ./...
 ```
 
-Files are untrusted. Only a bounded part of each file is read, every offset is checked, and a
-malformed file gives an error or empty fields, never a panic or a large allocation. The parsers
-are fuzz-tested: `go test -fuzz=FuzzParse`.
+```bash
+go test ./... -count=1
+```
 
-Developed by WittyWilla. Apache-2.0: see [LICENSE](LICENSE) and [NOTICE](NOTICE).
+```bash
+go run github.com/wittywilla/wittymodule/cmd/wittymodule check .
+```
+
+The last one checks the manifest. On the same tool, `pack -targets linux/amd64 -out release .` builds a release for one system. CI also builds for every system.
+
+The parsers are fuzz-tested:
+
+```bash
+go test -fuzz=FuzzParse
+```
+
+To use it as a library, `wittyphotos.ReadFile(path)`, `wittyphotos.Dimensions(path)` and `wittyphotos.RawPreview(path)` do the three jobs above.
+
+## Licence
+
+Apache-2.0: see [LICENSE](LICENSE) and [NOTICE](NOTICE). If you redistribute it or build on it, keep the NOTICE attribution. Each release archive carries a `THIRD-PARTY-NOTICES.txt` for what its programs link.
 
 ## Legal
 
