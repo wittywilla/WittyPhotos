@@ -2,6 +2,26 @@
 
 Reads what a photo says about itself, without decoding the picture: when it was taken, with what camera, where, and how big it is. WittyMediaServer's photo libraries use it, and you need it if you have one.
 
+<!-- pictures -->
+
+![A timeline of photos](docs/images/photos.webp)
+
+<sub>The timeline in WittyMediaServer, with pictures from [Wikimedia Commons](https://commons.wikimedia.org/), under CC BY, CC BY-SA, CC0 or in the public domain; the server's [credits list](https://github.com/wittywilla/WittyMediaServer/blob/master/docs/images/CREDITS.md) names each.</sub>
+
+![One photo filling the screen](docs/images/photos-viewer.webp)
+
+<sub>The viewer, with pictures from [Wikimedia Commons](https://commons.wikimedia.org/), under CC BY, CC BY-SA, CC0 or in the public domain; the server's [credits list](https://github.com/wittywilla/WittyMediaServer/blob/master/docs/images/CREDITS.md) names each.</sub>
+
+![Photos on a map](docs/images/photos-map.webp)
+
+<sub>The map, with pictures from [Wikimedia Commons](https://commons.wikimedia.org/), under CC BY, CC BY-SA, CC0 or in the public domain; the server's [credits list](https://github.com/wittywilla/WittyMediaServer/blob/master/docs/images/CREDITS.md) names each.</sub>
+
+![The Sharing and photos page in Settings](docs/images/settings-sharing.webp)
+
+<sub>Settings, Sharing & photos, in WittyMediaServer.</sub>
+
+<!-- /pictures -->
+
 ## What it does
 
 - **Reads EXIF** from JPEG, TIFF, camera RAW, HEIC, AVIF, PNG and WebP files.
