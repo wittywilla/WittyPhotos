@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (C) 2026 WittyWilla and contributors
+
 // Package wittyphotos reads what a photo says about itself without decoding
 // it: EXIF (when, with what, where), the picture's dimensions and the JPEG
 // preview a camera RAW file carries. It is pure Go with no dependencies, reads
