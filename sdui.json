@@ -2,7 +2,7 @@
   "format": "wittymodule-sdui",
   "formatVersion": 1,
   "module": "wittyphotos",
-  "catalog": 2,
+  "catalog": 7,
   "theme": {
     "scope": "wittyphotos",
     "label": "Photos"
@@ -100,6 +100,21 @@
           "type": "recentlyAdded",
           "library": "$each"
         }
+      }
+    }
+  ],
+  "navigation": [
+    {
+      "id": "wittyphotos",
+      "type": "page",
+      "page": "wittyphotos",
+      "label": "Photos",
+      "icon": "photo",
+      "when": {
+        "hasLibrary": "photos"
+      },
+      "placement": {
+        "phone": "more"
       }
     }
   ]
