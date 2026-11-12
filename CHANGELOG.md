@@ -5,6 +5,7 @@ What changed in WittyPhotos, newest first. What changed before it had a reposito
 
 ## Unreleased
 
+- **Its own server-driven pages** (`sdui.json`): the page of every photo library (the timeline, with albums, favourites, folders, the map and people, where the app has it; every photo in a grid on televisions and phones) and the Photos page, and a row for the page editor's gallery.
 - **WittyPhotos 0.4.0:** Fits WittyMediaServer 0.8.x.
 
 - Module API 3 and WittyMediaServer 0.6.0-alpha: this is how a server gets it now, with no copy compiled in.

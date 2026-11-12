@@ -1,0 +1,106 @@
+{
+  "format": "wittymodule-sdui",
+  "formatVersion": 1,
+  "module": "wittyphotos",
+  "catalog": 2,
+  "theme": {
+    "scope": "wittyphotos",
+    "label": "Photos"
+  },
+  "pages": [
+    {
+      "id": "wittyphotos-library",
+      "kind": "library",
+      "title": "{library}",
+      "icon": "photo",
+      "description": "A photo library: the timeline with albums, favourites, folders, the map and people where the app has them, and every photo, newest first, elsewhere.",
+      "match": {
+        "libraryKind": "photos"
+      },
+      "sections": [
+        {
+          "id": "timeline",
+          "component": "NativeView",
+          "props": {
+            "view": "photoTimeline",
+            "library": "$library"
+          },
+          "children": [
+            {
+              "id": "all",
+              "component": "Grid",
+              "props": {
+                "cardStyle": "photo",
+                "showTitles": false,
+                "empty": "message",
+                "emptyText": "No photos yet. Put pictures in this library's folders and scan it."
+              },
+              "source": {
+                "type": "recentlyAdded",
+                "library": "$library"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wittyphotos",
+      "kind": "photos",
+      "title": "Photos",
+      "icon": "photo",
+      "description": "Every photo library together, newest first.",
+      "sections": [
+        {
+          "id": "recent",
+          "component": "Shelf",
+          "repeat": {
+            "over": "libraries",
+            "kinds": [
+              "photos"
+            ]
+          },
+          "props": {
+            "title": "{each}",
+            "cardStyle": "photo",
+            "cardSize": "l",
+            "showTitles": false,
+            "seeAll": "always"
+          },
+          "source": {
+            "type": "recentlyAdded",
+            "library": "$each"
+          }
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "id": "wittyphotos-recent",
+      "label": "New photos in each library",
+      "description": "A row of large pictures for each photo library, newest first.",
+      "section": {
+        "id": "photos",
+        "component": "Shelf",
+        "repeat": {
+          "over": "libraries",
+          "kinds": [
+            "photos"
+          ]
+        },
+        "props": {
+          "title": "{each}",
+          "cardStyle": "photo",
+          "cardSize": "l",
+          "showTitles": false,
+          "seeAll": "always"
+        },
+        "source": {
+          "type": "recentlyAdded",
+          "library": "$each"
+        }
+      }
+    }
+  ]
+}
