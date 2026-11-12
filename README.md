@@ -84,6 +84,13 @@ To use it as a library, `wittyphotos.ReadFile(path)`, `wittyphotos.Dimensions(pa
 
 GNU Affero General Public License v3.0 (or later): see [LICENSE](LICENSE) and [NOTICE](NOTICE). If you redistribute it or build on it, please keep the NOTICE attribution. Each release archive carries a `THIRD-PARTY-NOTICES.txt` for what its programs link.
 
+
+## In every app: its server-driven UI
+
+It carries its own `sdui.json`: the page of every photo library (the timeline, with albums, favourites, folders, the map and people where the app has them; every photo in a grid elsewhere), the Photos page, and a row for the page editor's gallery.
+
+The file is checked with `wittymodule check` and described in WittyMediaServer's [docs/SDUI-MODULES.md](https://github.com/wittywilla/WittyMediaServer/blob/master/docs/SDUI-MODULES.md).
+
 ## Legal
 
 WittyPhotos is an independent open-source project. It isn't associated with, sponsored by or
