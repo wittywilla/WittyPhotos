@@ -3,6 +3,10 @@
 What changed in WittyPhotos, newest first. What changed before it had a repository of its own is in the
 [WittyMediaServer changelog](https://github.com/wittywilla/WittyMediaServer/blob/master/CHANGELOG.md).
 
+## 0.5.1
+
+- The first published release on module API 5, with the WittyModule 0.5.4 workflows. The tag v0.5.0 was made with workflows that couldn't build it and was never published.
+
 ## 0.5.0
 
 - Built on WittyModule 0.5.4 and module API 5.

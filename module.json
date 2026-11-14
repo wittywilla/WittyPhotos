@@ -1,7 +1,7 @@
 {
   "id": "wittyphotos",
   "name": "WittyPhotos",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "repo": "wittywilla/WittyPhotos",
   "license": "AGPL-3.0-or-later",
   "delivery": "helper",
