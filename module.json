@@ -50,6 +50,7 @@
   "updates": "All of it: reading EXIF, picture sizes and RAW previews; albums; the photo map's settings; and its screens, in the web app and on every app (timeline, albums, map).",
   "stays": "Scanning photo libraries and keeping what EXIF says, the pictures themselves, uploads and share links stay the server's.",
   "permissions": [
+    "network",
     "data"
   ]
 }
