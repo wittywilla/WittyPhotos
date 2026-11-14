@@ -35,6 +35,9 @@ jobs:
           go-version: "1.27.x"
           check-latest: true
           cache: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: 22
       - name: The manifest
         run: go run github.com/wittywilla/wittymodule/cmd/wittymodule@v0.5.2 check .
       # Tags never move, so a change that keeps the last tag's version could never reach
@@ -54,3 +57,7 @@ jobs:
             flags=""
             GOOS=${t%/*} GOARCH=${t#*/} GOARM=7 CGO_ENABLED=0 go build -gcflags="$flags" ./... || exit 1
           done
+      - name: Install
+        run: if [ -f package-lock.json ]; then npm ci --ignore-scripts --no-audit --no-fund; else npm install --ignore-scripts --no-audit --no-fund; fi
+      - run: npm test --if-present
+      - run: npm run build:bundle

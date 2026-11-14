@@ -10,7 +10,7 @@ What changed in WittyPhotos, newest first. What changed before it had a reposito
   - **The photo map's online map** (`GET /map`), from its own settings (Settings, Photos: whether to use one, its address of map squares, its credit), checked as the server checked them.
   - An account that goes takes its albums with it, and so does a library; removing WittyPhotos without keeping its data removes its folder.
 - **Albums on every app** (`sdui.json`, written from package `ui`): an Albums row on a photo library's page and on the Photos page, a page of a library's albums and a page of an album's pictures, for the Apple TV and Android TV apps among others. The web and desktop apps' views of a library (`wittyphotos.timeline`, `wittyphotos.map`) are its bundle's.
-- **Its screens in the web app** (`integration.json` `web`): a photo library opens at `/photos/library/{id}`, drawn by its web part.
+- **Its screens in the web app** (`integration.json` `web`, `register` in `web/`): a photo library opens at `/photos/library/{id}`, drawn by its web part: the timeline, albums, favourites, folders, the map and the picture viewer, moved file for file from WittyMediaServer's web app (`PhotosLibrary`, `PhotoMap`, `PhotoViewer`, `mapMath`) with their stylesheet, built with WittyModule's kit (`npm run build:bundle`). An album's link for people without an account shares its pictures as they are when it's made (the server's share links of a set of pictures).
 
 ## 0.4.0
 
