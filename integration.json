@@ -1,0 +1,83 @@
+{
+  "format": "wittymodule-integration",
+  "formatVersion": 1,
+  "module": "wittyphotos",
+  "host": {
+    "http": ">=1",
+    "web": ">=5",
+    "sdui": ">=8",
+    "host": ">=1"
+  },
+  "http": [
+    {
+      "path": "/albums",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "auth": "user",
+      "limits": {
+        "body": "16KB",
+        "answer": "4MB",
+        "time": "30s"
+      }
+    },
+    {
+      "path": "/albums/{id}",
+      "methods": [
+        "PUT",
+        "DELETE"
+      ],
+      "auth": "user",
+      "limits": {
+        "body": "16KB",
+        "time": "30s"
+      }
+    },
+    {
+      "path": "/albums/{id}/items",
+      "methods": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
+      "auth": "user",
+      "limits": {
+        "body": "64KB",
+        "answer": "4MB",
+        "time": "1m"
+      }
+    },
+    {
+      "path": "/map",
+      "methods": [
+        "GET"
+      ],
+      "auth": "user",
+      "limits": {
+        "time": "10s"
+      }
+    }
+  ],
+  "web": {
+    "routes": [
+      {
+        "path": "/photos/library/:id",
+        "frame": "app"
+      }
+    ],
+    "takeover": [
+      {
+        "libraryKind": "photos",
+        "route": "/photos/library/{library}"
+      }
+    ]
+  },
+  "data": {
+    "store": "sqlite",
+    "backup": "library"
+  },
+  "lifecycle": {
+    "uninstall": "ask-keep-data"
+  }
+}

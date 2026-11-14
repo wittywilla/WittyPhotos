@@ -1,12 +1,16 @@
 {
   "id": "wittyphotos",
   "name": "WittyPhotos",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "repo": "wittywilla/WittyPhotos",
   "license": "AGPL-3.0-or-later",
   "delivery": "helper",
   "entry": "wittyphotos-module",
-  "api": 4,
+  "webEntry": "index.js",
+  "webStyle": "style.css",
+  "api": 5,
+  "dataFormat": 1,
+  "dataFrom": 1,
   "minServer": "0.8.0-alpha",
   "maxServer": "0.8.x",
   "capabilities": {
@@ -39,10 +43,13 @@
     ]
   },
   "group": "photos",
-  "summary": "Photo libraries: what a photo says about itself, including RAW files, without decoding it.",
+  "summary": "Photo libraries: what a photo says about itself (RAW files too), albums, the map, and the photo screens on every app.",
   "libraries": [
     "photos"
   ],
-  "updates": "All of it: reading EXIF, picture sizes, and the preview inside RAW files.",
-  "stays": "The photo pages in the app."
+  "updates": "All of it: reading EXIF, picture sizes and RAW previews; albums; the photo map's settings; and its screens, in the web app and on every app (timeline, albums, map).",
+  "stays": "Scanning photo libraries and keeping what EXIF says, the pictures themselves, uploads and share links stay the server's.",
+  "permissions": [
+    "data"
+  ]
 }

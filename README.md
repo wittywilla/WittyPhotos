@@ -29,17 +29,21 @@ Reads what a photo says about itself, without decoding the picture: when it was 
 - **Pulls the largest JPEG preview out of a camera RAW file.** `module.json` lists the RAW extensions it takes.
 - **Treats every file as untrusted.** Only a bounded part of each file is read, every offset is checked, and a malformed file gives an error or empty fields.
 
-The photo pages stay in the app.
+- **Keeps albums** in a database of its own: named sets of pictures in a photo library, private or shared with everyone who can open the library, each person seeing only the pictures they may.
+- **Sets up the photo map:** whether it uses an online map, and which (Settings, Photos). Without one, nothing leaves the server.
+- **Draws the photo screens:** the timeline, albums, favourites, folders, the map and the viewer in the web and desktop apps (its web part), and pages every app draws, televisions included (`sdui.json`).
+
+The server keeps scanning photo libraries and what EXIF says about each picture, the pictures themselves, uploads and share links.
 
 How to use it is in **Help** inside WittyMediaServer: see Photos.
 
 ## How to get it
 
-An admin adds it from the module store inside WittyMediaServer: **Settings → Modules**, then **Browse the store**, then **Add** beside WittyPhotos. That needs WittyMediaServer 0.6.0-alpha or later, and it works with nothing older. The range this version fits is in `module.json`: 0.6.0-alpha through 0.6.x.
+An admin adds it from the module store inside WittyMediaServer: **Settings → Modules**, then **Browse the store**, then **Add** beside WittyPhotos. It needs a server with module API 5. The range this version fits is in `module.json`.
 
 ## What it needs
 
-[WittyModule](https://github.com/wittywilla/WittyModule), which is how a server talks to it, built in. Nothing else. It's written in Go with no cgo.
+[WittyModule](https://github.com/wittywilla/WittyModule) 0.5.2 (module API 5), which is how a server talks to it, and a SQLite driver written in Go, both built in. It's written in Go with no cgo, and needs WittyMediaServer with module API 5. It keeps its albums in its own data folder.
 
 ## Platforms
 
@@ -78,7 +82,7 @@ The parsers are fuzz-tested:
 go test -fuzz=FuzzParse
 ```
 
-To use it as a library, `wittyphotos.ReadFile(path)`, `wittyphotos.Dimensions(path)` and `wittyphotos.RawPreview(path)` do the three jobs above.
+Its routes, data and lifecycle are listed in `integration.json` (WittyMediaServer docs/MODULES-API5.md). To use it as a library, `wittyphotos.ReadFile(path)`, `wittyphotos.Dimensions(path)` and `wittyphotos.RawPreview(path)` do the three jobs above.
 
 ## Licence
 
@@ -87,7 +91,7 @@ GNU Affero General Public License v3.0 (or later): see [LICENSE](LICENSE) and [N
 
 ## In every app: its server-driven UI
 
-It carries its own `sdui.json`: the page of every photo library (the timeline, with albums, favourites, folders, the map and people where the app has them; every photo in a grid elsewhere), the Photos page, and a row for the page editor's gallery.
+It carries its own `sdui.json`, written from package `ui` (`go test ./ui -update-sdui`): the page of every photo library (the timeline, with albums, favourites, folders, the map and people where the app has them; its albums and every photo elsewhere), the Photos page, a page of a library's albums and one of an album's pictures, the map's settings, and a row for the page editor's gallery.
 
 The file is checked with `wittymodule check` and described in WittyMediaServer's [docs/SDUI-MODULES.md](https://github.com/wittywilla/WittyMediaServer/blob/master/docs/SDUI-MODULES.md).
 
@@ -104,7 +108,7 @@ it works with, and belong to their owners. It's provided “as is”, with no wa
 
 A version tag builds a program for every platform, signs the checksum list, and publishes a release that servers can install.
 
-Versions move in small steps as work lands. `go run github.com/wittywilla/wittymodule/cmd/wittymodule@v0.4.0 bump .` raises it
+Versions move in small steps as work lands. `go run github.com/wittywilla/wittymodule/cmd/wittymodule@v0.5.2 bump .` raises it
 everywhere it is written (add `-part minor` for a bigger step). A bump isn't a release: nothing is
 tagged or published until you tag it. CI fails when code changed since the last tag and the version
 didn't, because tags never move.

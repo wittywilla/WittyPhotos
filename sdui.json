@@ -2,7 +2,7 @@
   "format": "wittymodule-sdui",
   "formatVersion": 1,
   "module": "wittyphotos",
-  "catalog": 7,
+  "catalog": 8,
   "theme": {
     "scope": "wittyphotos",
     "label": "Photos"
@@ -13,7 +13,7 @@
       "kind": "library",
       "title": "{library}",
       "icon": "photo",
-      "description": "A photo library: the timeline with albums, favourites, folders, the map and people where the app has them, and every photo, newest first, elsewhere.",
+      "description": "A photo library: the timeline with albums, favourites, folders, the map and people where the app has them; elsewhere its albums, then every photo, newest first.",
       "match": {
         "libraryKind": "photos"
       },
@@ -22,22 +22,36 @@
           "id": "timeline",
           "component": "NativeView",
           "props": {
-            "view": "photoTimeline",
-            "library": "$library"
+            "library": "$library",
+            "view": "photoTimeline"
           },
           "children": [
+            {
+              "id": "albums",
+              "component": "Shelf",
+              "props": {
+                "cardStyle": "photo",
+                "empty": "hide",
+                "seeAll": "never",
+                "title": "Albums"
+              },
+              "source": {
+                "library": "$library",
+                "type": "wittyphotos.albums"
+              }
+            },
             {
               "id": "all",
               "component": "Grid",
               "props": {
                 "cardStyle": "photo",
-                "showTitles": false,
                 "empty": "message",
-                "emptyText": "No photos yet. Put pictures in this library's folders and scan it."
+                "emptyText": "No photos yet. Put pictures in this library's folders and scan it.",
+                "showTitles": false
               },
               "source": {
-                "type": "recentlyAdded",
-                "library": "$library"
+                "library": "$library",
+                "type": "recentlyAdded"
               }
             }
           ]
@@ -49,27 +63,94 @@
       "kind": "photos",
       "title": "Photos",
       "icon": "photo",
-      "description": "Every photo library together, newest first.",
+      "description": "Every photo library together, newest first, then the albums in each.",
       "sections": [
         {
           "id": "recent",
           "component": "Shelf",
+          "props": {
+            "cardSize": "l",
+            "cardStyle": "photo",
+            "seeAll": "always",
+            "showTitles": false,
+            "title": "{each}"
+          },
+          "source": {
+            "library": "$each",
+            "type": "recentlyAdded"
+          },
           "repeat": {
             "over": "libraries",
             "kinds": [
               "photos"
             ]
-          },
+          }
+        },
+        {
+          "id": "albums",
+          "component": "Shelf",
           "props": {
-            "title": "{each}",
             "cardStyle": "photo",
-            "cardSize": "l",
-            "showTitles": false,
-            "seeAll": "always"
+            "empty": "hide",
+            "seeAll": "never",
+            "title": "Albums in {each}"
           },
           "source": {
-            "type": "recentlyAdded",
-            "library": "$each"
+            "library": "$each",
+            "type": "wittyphotos.albums"
+          },
+          "repeat": {
+            "over": "libraries",
+            "kinds": [
+              "photos"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "wittyphotos-albums",
+      "kind": "custom",
+      "title": "{title}",
+      "icon": "collection",
+      "description": "A photo library's albums on every app: the person's own and the shared ones, each opening its pictures. Opened with ?item=<library id>&name=<its name>.",
+      "scope": "wittyphotos",
+      "sections": [
+        {
+          "id": "albums",
+          "component": "Grid",
+          "props": {
+            "cardStyle": "photo",
+            "empty": "message",
+            "emptyText": "No albums yet. Albums are made in a browser or the desktop app."
+          },
+          "source": {
+            "library": "$item",
+            "type": "wittyphotos.albums"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wittyphotos-album",
+      "kind": "custom",
+      "title": "{title}",
+      "icon": "photo",
+      "description": "One album's pictures on every app, newest added first, each opening as in its library. Opened with ?item=<album id>&name=<its name>.",
+      "scope": "wittyphotos",
+      "sections": [
+        {
+          "id": "photos",
+          "component": "Grid",
+          "props": {
+            "cardStyle": "photo",
+            "empty": "message",
+            "emptyText": "This album is empty, or holds nothing this profile may see.",
+            "showTitles": false
+          },
+          "source": {
+            "album": "$item",
+            "type": "wittyphotos.album"
           }
         }
       ]
@@ -83,39 +164,147 @@
       "section": {
         "id": "photos",
         "component": "Shelf",
+        "props": {
+          "cardSize": "l",
+          "cardStyle": "photo",
+          "seeAll": "always",
+          "showTitles": false,
+          "title": "{each}"
+        },
+        "source": {
+          "library": "$each",
+          "type": "recentlyAdded"
+        },
         "repeat": {
           "over": "libraries",
           "kinds": [
             "photos"
           ]
-        },
-        "props": {
-          "title": "{each}",
-          "cardStyle": "photo",
-          "cardSize": "l",
-          "showTitles": false,
-          "seeAll": "always"
-        },
-        "source": {
-          "type": "recentlyAdded",
-          "library": "$each"
         }
       }
+    }
+  ],
+  "sources": [
+    {
+      "type": "wittyphotos.albums",
+      "label": "Photo albums",
+      "description": "The albums a person sees in a photo library: their own and the shared ones, each with its cover and how many pictures they may see in it, opening the album.",
+      "icon": "collection",
+      "category": "library",
+      "params": [
+        {
+          "name": "library",
+          "type": "ref",
+          "label": "Library",
+          "help": "The photo library's ID: $library on its page, $each over libraries.",
+          "required": true,
+          "since": 0
+        }
+      ],
+      "yields": [
+        "collection"
+      ],
+      "cardStyle": "photo",
+      "paged": false,
+      "title": "Albums",
+      "since": 8
+    },
+    {
+      "type": "wittyphotos.album",
+      "label": "An album's pictures",
+      "description": "The pictures in one album that the person may see, newest added first.",
+      "icon": "photo",
+      "category": "library",
+      "params": [
+        {
+          "name": "album",
+          "type": "ref",
+          "label": "Album",
+          "help": "The album's ID, $item on its page.",
+          "required": true,
+          "since": 0
+        }
+      ],
+      "yields": [
+        "photo"
+      ],
+      "cardStyle": "photo",
+      "paged": false,
+      "since": 8
+    }
+  ],
+  "views": [
+    {
+      "id": "wittyphotos.timeline",
+      "label": "Photo timeline",
+      "description": "A photo library as the web and desktop apps draw it: the timeline by month, albums, favourites, folders, the map and uploads. Other apps show what's inside it.",
+      "platforms": [
+        "web",
+        "desktop"
+      ]
+    },
+    {
+      "id": "wittyphotos.map",
+      "label": "Photo map",
+      "description": "The pictures of a photo library that say where they were taken, on a map, in the web and desktop apps. Other apps show what's inside it.",
+      "platforms": [
+        "web",
+        "desktop"
+      ]
     }
   ],
   "navigation": [
     {
       "id": "wittyphotos",
-      "type": "page",
-      "page": "wittyphotos",
       "label": "Photos",
       "icon": "photo",
+      "type": "page",
+      "page": "wittyphotos",
       "when": {
         "hasLibrary": "photos"
       },
       "placement": {
         "phone": "more"
       }
+    }
+  ],
+  "settings": [
+    {
+      "id": "wittyphotos",
+      "title": "Photos",
+      "icon": "photo",
+      "admin": true,
+      "groups": [
+        {
+          "title": "The map",
+          "footer": "Without an online map, the photo map draws the world's outline from this server and asks no one for anything. With one, each person's browser asks the map's provider for the squares it shows, so the provider sees roughly where they are looking.",
+          "rows": [
+            {
+              "key": "mapOnline",
+              "kind": "bool",
+              "label": "Use an online map",
+              "help": "Off: only the outline, and nothing leaves this server.",
+              "default": false
+            },
+            {
+              "key": "mapTiles",
+              "kind": "string",
+              "label": "Online map address",
+              "help": "An https address of map squares with {z}, {x} and {y} in it, such as https://tile.example.org/{z}/{x}/{y}.png. Use a provider whose terms allow it.",
+              "default": "",
+              "maxLength": 400
+            },
+            {
+              "key": "mapAttribution",
+              "kind": "string",
+              "label": "Credit to show on the map",
+              "help": "The credit the provider asks for, as one line of plain text.",
+              "default": "",
+              "maxLength": 200
+            }
+          ]
+        }
+      ]
     }
   ]
 }
