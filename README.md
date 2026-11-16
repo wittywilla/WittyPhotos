@@ -2,6 +2,8 @@
 
 Reads what a photo says about itself, without decoding the picture: when it was taken, with what camera, where, and how big it is. WittyMediaServer's photo libraries use it, and you need it if you have one.
 
+It's a module of [WittyMediaServer](https://github.com/wittywilla/WittyMediaServer) ([wittymediaserver.com](https://wittymediaserver.com)), on module API 5.
+
 <!-- pictures -->
 
 ![A timeline of photos](docs/images/photos.webp)
@@ -39,11 +41,11 @@ How to use it is in **Help** inside WittyMediaServer: see Photos.
 
 ## How to get it
 
-An admin adds it from the module store inside WittyMediaServer: **Settings → Modules**, then **Browse the store**, then **Add** beside WittyPhotos. It needs a server with module API 5. The range this version fits is in `module.json`.
+An admin adds it from the module store inside WittyMediaServer: **Settings → Modules**, then **Browse the store**, then **Add** beside WittyPhotos. The range this version fits is in `module.json`: WittyMediaServer 0.8.0-alpha through 0.8.x, module API 5. The server takes API 5 modules only, so older servers can't use this version. How modules work on the server is in its [docs/MODULES.md](https://github.com/wittywilla/WittyMediaServer/blob/master/docs/MODULES.md).
 
 ## What it needs
 
-[WittyModule](https://github.com/wittywilla/WittyModule) 0.5.2 (module API 5), which is how a server talks to it, and a SQLite driver written in Go, both built in. It's written in Go with no cgo, and needs WittyMediaServer with module API 5. It keeps its albums in its own data folder.
+[WittyModule](https://github.com/wittywilla/WittyModule) 0.5.4 (module API 5), which is how a server talks to it, and a SQLite driver written in Go, both built in. It's written in Go with no cgo, and needs WittyMediaServer with module API 5. It keeps its albums in its own data folder.
 
 ## Platforms
 
@@ -60,7 +62,7 @@ On macOS and FreeBSD the server has no sandbox for a module's helper: it gets a 
 
 ## Building and testing
 
-You need Go 1.26 or newer. In a worktree, first run the copy of `dev-modules.mjs` kept above the repositories (`node D:/projects/dev-modules.mjs` on the development machine). It writes a `go.work` that git ignores, so the checkout builds against the repositories beside it. Never run `go work use`.
+You need Go 1.26 or newer. In a worktree, first run WittyMediaServer's `scripts/dev-modules.mjs` (or the copy its `--root` option keeps in the folder above the repositories). It writes a `go.work` that git ignores, so the checkout builds against the repositories beside it. Never run `go work use`.
 
 ```bash
 go vet ./...
@@ -74,7 +76,17 @@ go test ./... -count=1
 go run github.com/wittywilla/wittymodule/cmd/wittymodule check .
 ```
 
-The last one checks the manifest. On the same tool, `pack -targets linux/amd64 -out release .` builds a release for one system. CI also builds for every system.
+The last one checks the manifest. The web part (`web/`) is tested and built as CI does it:
+
+```bash
+npm ci
+npm test
+npm run build:bundle
+```
+
+That builds with WittyModule's web builder (`kit/web/build-bundle.mjs`, from a WittyModule checkout beside this one, or `WITTYMODULE=<checkout>`).
+
+`go run github.com/wittywilla/wittymodule/cmd/wittymodule pack -targets linux/amd64 -out release .` builds a release for one system. CI also builds for every system.
 
 The parsers are fuzz-tested:
 
@@ -84,16 +96,17 @@ go test -fuzz=FuzzParse
 
 Its routes, data and lifecycle are listed in `integration.json` (WittyMediaServer docs/MODULES-API5.md). To use it as a library, `wittyphotos.ReadFile(path)`, `wittyphotos.Dimensions(path)` and `wittyphotos.RawPreview(path)` do the three jobs above.
 
-## Licence
-
-GNU Affero General Public License v3.0 (or later): see [LICENSE](LICENSE) and [NOTICE](NOTICE). If you redistribute it or build on it, please keep the NOTICE attribution. Each release archive carries a `THIRD-PARTY-NOTICES.txt` for what its programs link.
-
-
 ## In every app: its server-driven UI
 
 It carries its own `sdui.json`, written from package `ui` (`go test ./ui -update-sdui`): the page of every photo library (the timeline, with albums, favourites, folders, the map and people where the app has them; its albums and every photo elsewhere), the Photos page, a page of a library's albums and one of an album's pictures, the map's settings, and a row for the page editor's gallery.
 
 The file is checked with `wittymodule check` and described in WittyMediaServer's [docs/SDUI-MODULES.md](https://github.com/wittywilla/WittyMediaServer/blob/master/docs/SDUI-MODULES.md).
+
+## Licence
+
+GNU Affero General Public License v3.0 (or later): see [LICENSE](LICENSE) and [NOTICE](NOTICE). If you redistribute it or build on it, please keep the NOTICE attribution. Each release archive carries a `THIRD-PARTY-NOTICES.txt` for what its programs link.
+
+WittyPhotos is part of the WittyMediaServer project: [server repository](https://github.com/wittywilla/WittyMediaServer), [wittymediaserver.com](https://wittymediaserver.com).
 
 ## Legal
 
