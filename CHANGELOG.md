@@ -3,6 +3,10 @@
 What changed in WittyPhotos, newest first. What changed before it had a repository of its own is in the
 [WittyMediaServer changelog](https://github.com/wittywilla/WittyMediaServer/blob/master/CHANGELOG.md).
 
+## 0.5.5
+
+- **Updated dependencies:** react-router-dom from 7.18.5 to 7.18.6; github.com/wittywilla/wittymodule from 0.5.4 to 0.5.5; actions/setup-go from 7.0.0 to 7.1.0.
+
 ## 0.5.4
 
 - **Updated dependencies:** esbuild from 0.27.7 to 0.28.2.
