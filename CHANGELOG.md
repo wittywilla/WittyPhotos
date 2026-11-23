@@ -3,6 +3,16 @@
 What changed in WittyPhotos, newest first. What changed before it had a repository of its own is in the
 [WittyMediaServer changelog](https://github.com/wittywilla/WittyMediaServer/blob/master/CHANGELOG.md).
 
+## 0.5.3
+
+- **The map speaks the remote's language on a television.** In TV mode its hint says to press OK to move the map with the arrows and Back when done, instead of naming the + and − keys and Tab, which a remote doesn't have.
+- **Zoom the map with a remote:** while moving the map, Channel up and Channel down zoom in and out (as Page Up and Page Down do on a keyboard). The zoom buttons still work everywhere.
+
+## Developer notes for 0.5.3
+
+- `PhotoMap.tsx`: the hint reads the server's TV mode (`html.tv-mode`), and `ChannelUp`/`ChannelDown` zoom while moving.
+- `scripts/test-web.mjs` imports the built bundle by file URL, so `npm test` also runs on Windows.
+
 ## 0.5.2
 
 - The README's pictures are retaken from WittyMediaServer 0.8.0-alpha.

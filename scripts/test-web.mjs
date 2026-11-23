@@ -7,7 +7,7 @@
 // register() with esbuild, with stand-ins for the app.
 import { existsSync, readFileSync, readdirSync, rmSync } from 'node:fs'
 import { join, resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { build } from 'esbuild'
@@ -41,7 +41,7 @@ test('register() hands over what integration.json claims, and the views sdui.jso
   } }
   await build({ entryPoints: [join(root, 'web/index.ts')], outfile: out, bundle: true, format: 'esm', platform: 'node', jsx: 'automatic', logLevel: 'warning', plugins: [stub], external: ['react', 'react/jsx-runtime'] })
   try {
-    const { register, views } = await import(out)
+    const { register, views } = await import(pathToFileURL(out).href)
     const r = register({})
     assert.deepEqual(Object.keys(r.routes).sort(), integration.web.routes.map((x) => x.path).sort())
     for (const t of integration.web.takeover) assert.ok(integration.web.routes.some((x) => x.path === t.route.replace('{library}', ':id')), `takeover ${t.route} has no route`)
