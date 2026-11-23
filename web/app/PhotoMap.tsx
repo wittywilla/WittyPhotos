@@ -225,7 +225,7 @@ export default function PhotoMap({ lib, onOpen, onList }: { lib: Library; onOpen
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.altKey || e.ctrlKey || e.metaKey) return
     const t = e.target as HTMLElement
-    const z = e.key === '+' || e.key === '=' ? 1 : e.key === '-' || e.key === '_' ? -1 : moving && e.key === 'PageUp' ? 1 : moving && e.key === 'PageDown' ? -1 : 0
+    const z = e.key === '+' || e.key === '=' ? 1 : e.key === '-' || e.key === '_' ? -1 : moving && (e.key === 'PageUp' || e.key === 'ChannelUp') ? 1 : moving && (e.key === 'PageDown' || e.key === 'ChannelDown') ? -1 : 0
     if (z) { e.preventDefault(); zoomBy(z); return }
     if (t !== box.current) return // a pin or a button: arrows go from one to the next
     if (!moving) {
@@ -314,7 +314,11 @@ export default function PhotoMap({ lib, onOpen, onList }: { lib: Library; onOpen
   const total = first?.bounds?.count ?? 0
   const landCopies = view && s.w ? worldCopies(view, s, s.w / 2) : []
   const scale = view ? scaleOf(view.z) : 1
-  const hint = moving ? 'Arrows move the map, + and − zoom. Enter or Back when done.' : 'Press Enter to move the map with the arrows. + and − zoom. Tab or the arrows go from group to group.'
+  // A television's remote has arrows, OK and Back, and no + or − or Tab (TV-MODE.md: no computer keys on a TV).
+  const tv = document.documentElement.classList.contains('tv-mode')
+  const hint = tv
+    ? (moving ? 'The arrows move the map, Channel up and down zoom. OK or Back when done.' : 'Press OK to move the map with the arrows. The arrows go from group to group.')
+    : moving ? 'Arrows move the map, + and − zoom. Enter or Back when done.' : 'Press Enter to move the map with the arrows. + and − zoom. Tab or the arrows go from group to group.'
 
   return (
     <div className="gal-map-wrap">
