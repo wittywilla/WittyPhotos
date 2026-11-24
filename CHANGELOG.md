@@ -3,6 +3,10 @@
 What changed in WittyPhotos, newest first. What changed before it had a repository of its own is in the
 [WittyMediaServer changelog](https://github.com/wittywilla/WittyMediaServer/blob/master/CHANGELOG.md).
 
+## 0.5.6
+
+- **Nothing on the timeline slides under the top bar.** The selection bar and the "Jump to a year" list stick below the bar however tall it is, the floating glass bar included, using the room the bar measures (`--bar-space`) instead of a fixed 64 or 76 pixels. Older servers keep the old numbers.
+
 ## 0.5.4
 
 - **Updated dependencies:** esbuild from 0.27.7 to 0.28.2.
