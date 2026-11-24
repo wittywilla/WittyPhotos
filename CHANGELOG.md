@@ -7,6 +7,10 @@ What changed in WittyPhotos, newest first. What changed before it had a reposito
 
 - **Nothing on the timeline slides under the top bar.** The selection bar and the "Jump to a year" list stick below the bar however tall it is, the floating glass bar included, using the room the bar measures (`--bar-space`) instead of a fixed 64 or 76 pixels. Older servers keep the old numbers.
 
+## 0.5.5
+
+- **Updated dependencies:** react-router-dom from 7.18.5 to 7.18.6; github.com/wittywilla/wittymodule from 0.5.4 to 0.5.5; actions/setup-go from 7.0.0 to 7.1.0.
+
 ## 0.5.4
 
 - **Updated dependencies:** esbuild from 0.27.7 to 0.28.2.
